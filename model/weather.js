@@ -9,7 +9,7 @@ const weatherSchema = new Schema(
     },
     weather: [
       {
-        time: Date,
+        time: String,
         temp: Number,
         feels_like: Number
       }
