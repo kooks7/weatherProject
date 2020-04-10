@@ -5,10 +5,17 @@
 * 오늘 뭐 입을지 항상 고민한다. 날씨에 따라 자동으로 이 옷 입어도 되는지 알려주는 앱!
 * 아직 React.js 를 잘 모르니까 EJS 로 해보자.
 
+#### 설계
+
+* Front : React.js
+* Back : Node.js + Express.js
+* 통신 REST API
+* DB : mongoDB
+
 #### NPM Pakage
 
 * xml-js
-* ~~request~~ => request-promise
+* ~~request~~ => axios
 * express
 * ejs
 * body-parser
@@ -36,7 +43,7 @@ API URL : `api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your ap
 | 울 코트 (울, 캐시미어)  | 0~14      | 1,2,3       |      |
 | 가디건                  | 14~25     | 4,5,6       |      |
 | 가디건 (이너)           | -5~10     | 0,12        |      |
-| m                       | 10~17     | 3,4         |      |
+| MA-1 간절기용           | 10~17     | 3,4         |      |
 | MA-1 두꺼운 겨울용      | 0~14      | 1,2,3       |      |
 | 경패딩                  | 5~14      | 2,3         |      |
 | 그냥 패딩               | -5~5      | 0,1         |      |
