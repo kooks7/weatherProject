@@ -6,7 +6,7 @@ const router = express.Router();
 const mainController = require('../controllers/main');
 
 router.get('/', mainController.getMain);
-router.get('/search', mainController.getSearch);
-router.post('/search', mainController.postSearch);
+router.get('/weather/:city', mainController.getWeaher);
+// router.post('/search', mainController.postSearch);
 
 module.exports = router;

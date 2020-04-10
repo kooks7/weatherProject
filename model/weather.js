@@ -11,10 +11,11 @@ const weatherSchema = new Schema(
       {
         time: Date,
         temp: Number,
-        feels_like: Number,
-        required: true
+        feels_like: Number
       }
     ]
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model('Weather', weatherSchema);
