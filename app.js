@@ -26,6 +26,12 @@ const mainRouter = require('./routes/main');
 // const API = require('./data/API');
 app.use('/', mainRouter);
 
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  res.status(status).json({ message: message });
+});
+
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {

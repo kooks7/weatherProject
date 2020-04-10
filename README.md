@@ -5,12 +5,17 @@
 * 오늘 뭐 입을지 항상 고민한다. 날씨에 따라 자동으로 이 옷 입어도 되는지 알려주는 앱!
 * 아직 React.js 를 잘 모르니까 EJS 로 해보자.
 
-#### 설계
+## 설계
 
 * Front : React.js
 * Back : Node.js + Express.js
 * 통신 REST API
 * DB : mongoDB
+
+#### End Point
+
+1. **GET** : weather/{도시이름}
+   * 도시 이름을 넣게 되면 해당 도시를 찾고 데이터를 json 형태로 보내준다.
 
 #### NPM Pakage
 

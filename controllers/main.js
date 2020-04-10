@@ -12,10 +12,21 @@ exports.getWeaher = async (req, res, next) => {
   const city = req.params.city;
   // test API KEY 추후에 서비스 API로 바꾸고 환경변수로 설정해서 보호하기
   const apiKey = '58bd080d8d33adbba6bb6a3e644e9470';
-  const { data } = await axios.get(
-    `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`
-  );
-  // console.log(data);
+  try {
+    const { data } = await axios.get(
+      `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`
+    );
+  } catch (err) {
+    console.log(err);
+    err.message = '도시가 없습니다.';
+    err.statusCode = 404;
+    next(err);
+  }
+  // 올바른 검색인지 체크
+  console.log('code : ', data.cod);
+  if (data.cod !== 200) {
+  }
+
   //2. 없으면 서버에서 받아오고 DB에 한차례 저장한다.
   let isData = await Weather.where({ city: city });
 
@@ -41,10 +52,10 @@ exports.getWeaher = async (req, res, next) => {
   // || 만약 DB에 있으면 DB에서 가져오기
   // DB에 저장하는 값은 우선 time: Date, temp: Number, feels_like: Number 이다
   const weather = await Weather.findOne({ city: city });
-  console.log(weather);
+  // console.log(weather);
 
   //3. Json 데이터로 res를 보내준다.
-  res.status(201).json(weather);
+  res.status(201).json(weather.weather);
 };
 
 exports.getSearch = (req, res, next) => {
