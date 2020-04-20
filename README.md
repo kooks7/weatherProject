@@ -9,7 +9,7 @@
 
 * Front : React.js
 * Back : Node.js + Express.js
-* 통신 REST API
+* 통신 ~~REST API~~ > GraphQL 다양한 쿼리를 이용하기 위해
 * DB : mongoDB
 
 #### End Point
@@ -19,7 +19,6 @@
 
 #### NPM Pakage
 
-* xml-js
 * ~~request~~ => axios
 * express
 * ejs
@@ -180,7 +179,7 @@ API URL : `api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your ap
 1. 도시 검색 (처음엔 로그인 상태 유지하고 나중엔 안드로이드 앱 개발해서 위치기반)
 2. 날씨에 맞게 옷 입을 수 있는 목록 제공
 3. 옷 검색해서 출격 or 불허 결정하기
-4. 추후 리액트 처럼 싱글페이지 화면으로 변경하기
+4. 추후 리액트 처럼 싱글페이지 화면으로 변경하기 > React Native로 간단한 어플리케이션 만들기
 
 
 

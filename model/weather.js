@@ -7,11 +7,16 @@ const weatherSchema = new Schema(
       type: String,
       required: true
     },
-    weather: [
+    gu: {
+      type: String,
+      required: true
+    },
+    weathers: [
       {
         time: String,
         temp: Number,
-        feels_like: Number
+        feels_like: Number,
+        condition: String
       }
     ]
   },
