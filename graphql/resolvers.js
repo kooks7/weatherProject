@@ -52,11 +52,19 @@ module.exports = {
         };
         i++;
       }
+      console.log(123);
+
+      // 임시로 값 5개만 넣어주기
+      let tempArr = [];
+      for (let j = 0; j < 5; j++) {
+        tempArr.push(weatherArr[j]);
+      }
 
       forecastObj = new Weather({
         city: location.city,
         gu: location.gu,
-        weathers: weatherArr[0]
+        // 임시값 바꿔주기
+        weathers: tempArr
       });
       await forecastObj.save();
     } else {

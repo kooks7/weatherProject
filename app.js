@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
+
 const graphqlHttp = require('express-graphql');
 
 const graphqlSchema = require('./graphql/schema');
@@ -14,15 +15,13 @@ const MONGODB_URI = 'mongodb://localhost:27017/weather';
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE'
+    'OPTIONS, GET, POST, PUT, PATCH, DELETE'
   );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') {
@@ -40,6 +39,7 @@ app.use(
     customFormatErrorFn(err) {
       if (!err.originalError) {
         console.log('기술적 오류!');
+        console.log(err);
         return err;
       }
       const data = err.originalError.data;
