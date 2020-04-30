@@ -16,7 +16,10 @@ const weatherSchema = new Schema(
         time: String,
         temp: Number,
         feels_like: Number,
-        condition: String
+        condition: String,
+        humidity: Number,
+        wind_speed: Number,
+        rain: Number
       }
     ]
   },

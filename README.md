@@ -14,8 +14,52 @@
 
 #### End Point
 
-1. **GET** : weather/{도시이름}
-   * 도시 이름을 넣게 되면 해당 도시를 찾고 데이터를 json 형태로 보내준다.
+1. **GraphQL**: weather/{도시이름}
+   * 브라우저에서 위치정보 가져오기.
+
+#### DB
+
+1. City: 날씨 api에 사용할 도시 이름별 id
+
+#### Query별 함수
+
+1. ` getWeather(latitude: String!, longitude: String!): Forecast!`
+
+   * 사용 API : Google 위치정보, 날씨 API
+
+     * 날씨 API에서 가져오는 정보 
+
+       | 데이터       | 변수       |
+       | ------------ | ---------- |
+       | 시간         | time       |
+       | 온도         | temp       |
+       | 체감 온도    | feels_like |
+       | 날씨 상태    | condition  |
+       | 습도         | humidity   |
+       | 바람 속도    | wind_speed |
+       | 강수 or 강우 | rain       |
+
+     * GraphQL Query
+
+       ```javascript
+           type Weather {
+               time: String!
+               temp: Int!
+               feels_like: Int!
+               condition: String!
+               humidity: Int!
+               wind_speed: Float!
+               rain: Float
+           }
+       ```
+
+2. ` getClothes(temp: Int!): [Clothe]`
+
+   * 온도에 따른 옷 가져오는 기능
+
+3. `getCityId(city: String): CityId!`
+
+   * city id 검색하기
 
 #### NPM Pakage
 
@@ -172,14 +216,12 @@ API URL : `api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your ap
 8. 30~35도: 정신이 혼미해지는 단계
 9. 35도 이상: 헬
 
+# 기능
 
-
-#### 기능
-
-1. 도시 검색 (처음엔 로그인 상태 유지하고 나중엔 안드로이드 앱 개발해서 위치기반)
-2. 날씨에 맞게 옷 입을 수 있는 목록 제공
-3. 옷 검색해서 출격 or 불허 결정하기
-4. 추후 리액트 처럼 싱글페이지 화면으로 변경하기 > React Native로 간단한 어플리케이션 만들기
+1. 브라우저에서 위치 정보를 받아와서 위도 경도로 날씨 검색 후 제공
+2. 날씨에 맞게 옷을 추천
+3. 검색을 통해 도시를 변경 할 수 있다.
+4. 좋아요를 눌러서 그날 옷 괜찮은지 socket.io로 보내줄 수 있다.
 
 
 
