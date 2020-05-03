@@ -75,7 +75,6 @@ module.exports = {
     // 2. 레벨에 따라 가능한 옷 불러오기
     let tempObj = {
       outer: [],
-      outer: [],
       top: [],
       bottom: [],
       acc: [],
