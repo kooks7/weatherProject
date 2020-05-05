@@ -14,6 +14,10 @@ const clothesSchema = new Schema({
     type: Number,
     required: true
   },
+  like: {
+    type: Number,
+    required: true
+  },
   level: [String]
 });
 
