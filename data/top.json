@@ -25,55 +25,146 @@
     "type": "top",
     "temp": "17~35",
     "like": 0,
-    "level": []
+    "level": [5, 6, 7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "헨리넥 티셔츠",
+    "type": "top",
+    "temp": "17~25",
+    "like": 0,
+    "level": [4, 5, 6]
+  },
+  {
+    "name": "면 긴팔 셔츠",
+    "type": "top",
+    "temp": "14~25",
+    "like": 0,
+    "level": [4, 5, 6]
+  },
+  {
+    "name": "면 반팔 셔츠",
+    "type": "top",
+    "temp": "20~35",
+    "like": 0,
+    "level": [6, 7, 8]
+  },
+  {
+    "name": "폴리에스터 긴팔 셔츠",
+    "type": "top",
+    "temp": "14~20",
+    "like": 0,
+    "level": [4, 5, 6]
+  },
+  {
+    "name": "폴리에스터 반팔 셔츠",
+    "type": "top",
+    "temp": "17~30",
+    "like": 0,
+    "level": [5, 6, 7]
+  },
+  {
+    "name": "리넨 긴팔 셔츠",
+    "type": "top",
+    "temp": "17~30",
+    "like": 0,
+    "level": [5, 6, 7]
+  },
+  {
+    "name": "리넨 반팔 셔츠",
+    "type": "top",
+    "temp": "20~35",
+    "like": 0,
+    "level": [6, 7, 8]
+  },
+  {
+    "name": "레이온 긴팔 셔츠",
+    "type": "top",
+    "temp": "14~25",
+    "like": 0,
+    "level": [4, 5, 6]
+  },
+  {
+    "name": "레이온 반팔 셔츠",
+    "type": "top",
+    "temp": "20~35",
+    "like": 0,
+    "level": [6, 7, 8]
+  },
+  {
+    "name": "시어서커 긴팔 셔츠",
+    "type": "top",
+    "temp": "14~25",
+    "like": 0,
+    "level": [4, 5, 6]
+  },
+  {
+    "name": "시어서커 반팔 셔츠",
+    "type": "top",
+    "temp": "17~35",
+    "like": 0,
+    "level": [5, 6, 7, 8]
+  },
+  {
+    "name": "데님 셔츠",
+    "type": "top",
+    "temp": "17~25",
+    "like": 0,
+    "level": [5, 6]
+  },
+  {
+    "name": "나시",
+    "type": "top",
+    "temp": "25~35",
+    "like": 0,
+    "level": [7, 8]
+  },
+  {
+    "name": "목폴라",
+    "type": "top",
+    "temp": "5~14",
     "like": 0,
     "level": []
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "울 니트",
+    "type": "top",
+    "temp": "5~14",
     "like": 0,
     "level": []
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "아크릴 니트",
+    "type": "top",
+    "temp": "5~14",
     "like": 0,
-    "level": []
+    "level": [0, 1, 2, 3, 4, 5]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "캐시미어 니트",
+    "type": "top",
+    "temp": "5~10",
     "like": 0,
-    "level": []
+    "level": [1, 2]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "등산복",
+    "type": "top",
+    "temp": "10~25",
     "like": 0,
-    "level": []
+    "level": [3, 4, 5, 6]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "맨투맨 면",
+    "type": "top",
+    "temp": "10~25",
     "like": 0,
-    "level": []
+    "level": [3, 4, 5, 6]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "맨투맨 기모",
+    "type": "top",
+    "temp": "10~17",
     "like": 0,
-    "level": []
+    "level": [3, 4]
   }
 ]

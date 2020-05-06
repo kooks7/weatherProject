@@ -12,10 +12,53 @@ module.exports = {
     // 1. 위도 경도로 위치 검색
 
     const { weatherKey } = apiKey;
+    const { GoogleKey } = apiKey;
     let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${weatherKey}&units=metric`;
-
+    const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleKey}`;
+    // https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleKey}
     const { data } = await axios.get(apiUrl);
+    const {
+      data: { results }
+    } = await axios.get(googleApi);
+    // console.log(results);
+    let country;
+    let city;
 
+    if (results[1]) {
+      //find country name
+      for (let i = 0; i < results[0].address_components.length; i++) {
+        for (
+          let b = 0;
+          b < results[0].address_components[i].types.length;
+          b++
+        ) {
+          if (results[0].address_components[i].types[b] == 'locality') {
+            //this is the object you are looking for
+            city = results[0].address_components[i].long_name;
+            break;
+          } else if (
+            results[0].address_components[i].types[b] ==
+            'administrative_area_level_1'
+          ) {
+            city = results[0].address_components[i].long_name;
+            break;
+          }
+        }
+        for (
+          let b = 0;
+          b < results[0].address_components[i].types.length;
+          b++
+        ) {
+          if (results[0].address_components[i].types[b] == 'country') {
+            //this is the object you are looking for
+            country = results[0].address_components[i].long_name;
+            break;
+          }
+        }
+      }
+    }
+    console.log(country, city);
+    // console.log(loc);
     let weatherArr = [];
     let i = 0;
     for (let d of data.list) {
@@ -39,8 +82,8 @@ module.exports = {
       tempArr.push(weatherArr[j]);
     }
     let forecastObj = {
-      city: data.city.country,
-      gu: data.city.name,
+      city: city,
+      country: country,
       weathers: tempArr
     };
     return forecastObj;
@@ -94,6 +137,7 @@ module.exports = {
     return tempObj;
   },
   getCityId: async function ({ city }) {
+    console.log('아이디 찾기 실행');
     // 1. validator로 검사하기
 
     // 2. 도시 검색 결과 정규식에 넣고
@@ -101,17 +145,61 @@ module.exports = {
     let reg2 = new RegExp(`^${city}`, 'ig');
 
     // 3. 정확한 이름 찾기
-    let data = await City.find().where('name').regex(reg1).limit(1);
-    console.log(data);
+    let data = await City.find()
+      .where('name')
+      .regex(reg1)
+      .select('-_id name country coord')
+      .limit(1);
     if (data.length === 0) {
-      data = await City.find().where('name').regex(reg2).limit(5);
+      data = await City.find()
+        .where('name')
+        .regex(reg2)
+        .limit(3)
+        .select('-_id name country coord');
       if (data.length === 0) {
         let reg3 = new RegExp(`${city}`, 'ig');
-        data = await City.find().where('name').regex(reg3).limit(5);
+        data = await City.find()
+          .where('name')
+          .regex(reg3)
+          .limit(5)
+          .select('-_id name country coord');
       }
     }
+    // // db에 숫자로 저장된
+    // for (let i = 0; i < data.length; i++) {
+    //   console.log(typeof data[i].coord.lon.toString());
+    //   data[i].coord.lon = data[i].coord.lon.toString();
+    //   data[i].coord.lat = data[i].coord.lat.toString();
+    // }
 
-    return data;
+    const { GoogleKey } = apiKey;
+    // 4. API 에서도 찾기
+    let cityQuery = city.split(' ').join('+');
+    console.log(cityQuery);
+    const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${GoogleKey}`;
+    const {
+      data: { results }
+    } = await axios.get(getCityApiUrl);
+    let locationData = results[0].formatted_address.split(',');
+
+    let resObj = {
+      name: locationData[0],
+      country: locationData[locationData.length - 1],
+      coord: {
+        lon: results[0].geometry.location.lng,
+        lat: results[0].geometry.location.lat
+      }
+    };
+
+    let resArr = [];
+    if (resObj.name.toLowerCase() !== city.toLowerCase()) {
+      resArr.push(resObj);
+      resArr = resArr.concat(data);
+    } else {
+      resArr = resArr.concat(resObj);
+    }
+    console.log(resArr);
+    return resArr;
   },
 
   getCityWeather: async function ({ city }) {},

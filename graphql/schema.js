@@ -3,7 +3,7 @@ const { buildSchema } = require('graphql');
 module.exports = buildSchema(`
     type Forecast {
         city: String!
-        gu: String!
+        country: String!
         weathers: [Weather!]
     }
 
@@ -37,16 +37,14 @@ module.exports = buildSchema(`
     }
 
     type CityId {
-        id: Int!
         name: String!
-        state: String!
         country: String!
         coord: Coord!
     }
 
     type Coord {
-        lon: String!
-        lat: String!
+        lon: Float!
+        lat: Float!
     }
 
     input ClothesInputData {
@@ -60,7 +58,7 @@ module.exports = buildSchema(`
     type RootQuery {
         getWeather(latitude: String!, longitude: String!): Forecast!
         getClothes(temp: Float!): ClotheType
-        getCityId(city: String): [CityId]
+        getCityId(city: String): [CityId]!
     }
 
     type RootMutation{
