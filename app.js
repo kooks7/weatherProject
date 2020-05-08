@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 
+const likedFun = require('./controllers/likeSocket');
+
 const graphqlHttp = require('express-graphql');
 
 const graphqlSchema = require('./graphql/schema');
@@ -64,6 +66,11 @@ mongoose
     const io = require('./socket').init(server);
     io.on('connection', (socket) => {
       console.log('Client Connected');
+      socket.on('liked', ({ data }) => {
+        const splitData = data.split('_');
+        // 식별 데이터, like unlike 데이터
+        likedFun.putLike(splitData[0], splitData[1]);
+      });
     });
     io.on('disconnect', () => {
       console.log('user disconnected');

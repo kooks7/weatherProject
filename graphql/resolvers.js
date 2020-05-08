@@ -1,10 +1,9 @@
 const axios = require('axios');
 const apiKey = require('../api.json');
-
 // const Weather = require('../model/weather');
-const Clothes = require('../model/Clothes');
+const Clothesdata = require('../model/ClothesData');
 const City = require('../model/CityId');
-const clothes = require('../model/ClothesObj');
+// const clothes = require('../model/ClothesObj');
 
 module.exports = {
   getWeather: async function ({ latitude, longitude }, req) {
@@ -88,53 +87,96 @@ module.exports = {
     };
     return forecastObj;
   },
-  getClothes: async function ({ temp }) {
-    // 1. 온도에 따라 레벨 분류하기
-    let tempLevel;
-    if (temp <= -5) {
-      tempLevel = 0;
-    } else if (temp > -5 && temp <= 0) {
-      tempLevel = 1;
-    } else if (temp > 0 && temp <= 10) {
-      tempLevel = 2;
-    } else if (temp > 10 && temp <= 14) {
-      tempLevel = 3;
-    } else if (temp > 14 && temp <= 17) {
-      tempLevel = 4;
-    } else if (temp > 17 && temp <= 20) {
-      tempLevel = 5;
-    } else if (temp > 20 && temp <= 25) {
-      tempLevel = 6;
-    } else if (temp > 25 && temp <= 30) {
-      tempLevel = 7;
-    } else if (temp > 30 && temp <= 35) {
-      tempLevel = 8;
-    } else {
-      tempLevel = 9;
+  getClothes: async function ({ temp, city, time }) {
+    try {
+      // 1. 온도에 따라 레벨 분류하기
+      let tempLevel;
+      if (temp <= -5) {
+        tempLevel = 0;
+      } else if (temp > -5 && temp <= 0) {
+        tempLevel = 1;
+      } else if (temp > 0 && temp <= 10) {
+        tempLevel = 2;
+      } else if (temp > 10 && temp <= 14) {
+        tempLevel = 3;
+      } else if (temp > 14 && temp <= 17) {
+        tempLevel = 4;
+      } else if (temp > 17 && temp <= 20) {
+        tempLevel = 5;
+      } else if (temp > 20 && temp <= 25) {
+        tempLevel = 6;
+      } else if (temp > 25 && temp <= 30) {
+        tempLevel = 7;
+      } else if (temp > 30 && temp <= 35) {
+        tempLevel = 8;
+      } else {
+        tempLevel = 9;
+      }
+
+      // console.log(temp, time, city);
+      const timeStamp = new Date(time);
+
+      const year = timeStamp.getFullYear();
+      const month = timeStamp.getMonth() + 1;
+      const date = timeStamp.getDate();
+      const fullTime = year.toString() + month.toString() + date.toString();
+      // console.log(fullTime);
+      // 1. db에 도시 + 날짜 데이터 있는지 찾고
+
+      const isData = await Clothesdata.find({ city: city, time: fullTime });
+      console.log(isData.length);
+      // 데이터 없으면 db에 넣어주기
+      console.log(isData);
+      if (isData.length === 0) {
+        const outer = require('../data/outer.json');
+        const top = require('../data/top.json');
+        console.log(outer[0].name);
+        const clothes = new Clothesdata({
+          city,
+          time: fullTime,
+          outer: outer,
+          top: top
+        });
+        await clothes.save();
+      }
+
+      let resObj = {
+        outer: [],
+        top: [],
+        bottom: [],
+        acc: [],
+        shoes: [],
+        casual_shoes: []
+      };
+      // time complexity 가 O(n^2) 지만 오브젝트에 몇개 안됨 그냥 두기
+      let [ClothesDB] = await Clothesdata.find({
+        city: city,
+        time: fullTime
+      }).select('outer top -_id');
+      console.log(ClothesDB);
+      ClothesDB = ClothesDB.toObject();
+
+      for (let k in ClothesDB) {
+        console.log(k);
+        for (let i = 0; i < ClothesDB[k].length; i++) {
+          if (ClothesDB[k][i].level.includes(tempLevel)) {
+            resObj[k].push(ClothesDB[k][i]);
+          }
+        }
+      }
+      console.log(resObj);
+      return resObj;
+    } catch (err) {
+      console.log(err);
     }
+
+    // 2. 없으면 현재 날짜 + 도시로 db 만든다. JSON 데이터로 db 만들기
+
+    // db에 누가 불러왔으면 데이터 가져오기
 
     // console.log(tempLevel);
 
-    // 2. 레벨에 따라 가능한 옷 불러오기
-    let tempObj = {
-      outer: [],
-      top: [],
-      bottom: [],
-      acc: [],
-      shoes: [],
-      casual_shoes: []
-    };
-    // time complexity 가 O(n^2) 지만 오브젝트에 몇개 안됨 그냥 두기
-    for (let k in clothes) {
-      console.log(k);
-      for (let i = 0; i < clothes[k].length; i++) {
-        if (clothes[k][i].level.includes(tempLevel)) {
-          tempObj[k].push(clothes[k][i]);
-        }
-      }
-    }
-
-    return tempObj;
+    // 3. 레벨에 따라 가능한 옷 불러오기 + 좋아요 가져오기
   },
   getCityId: async function ({ city }) {
     console.log('아이디 찾기 실행');

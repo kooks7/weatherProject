@@ -30,9 +30,12 @@ module.exports = buildSchema(`
     }
 
     type Clothe {
+        _id: ID!
         name: String!
         type: String!
         temp: String!
+        like: Int!
+        unlike: Int!
         level: [Int]
     }
 
@@ -54,10 +57,11 @@ module.exports = buildSchema(`
         level: Int!
     }
 
+    
 
     type RootQuery {
         getWeather(latitude: String!, longitude: String!): Forecast!
-        getClothes(temp: Float!): ClotheType
+        getClothes(temp: Float!, city: String!, time: String!): ClotheType
         getCityId(city: String): [CityId]!
     }
 
