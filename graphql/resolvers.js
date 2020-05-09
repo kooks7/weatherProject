@@ -19,43 +19,54 @@ module.exports = {
     const {
       data: { results }
     } = await axios.get(googleApi);
-    // console.log(results);
-    let country;
-    let city;
-
-    if (results[1]) {
-      //find country name
-      for (let i = 0; i < results[0].address_components.length; i++) {
-        for (
-          let b = 0;
-          b < results[0].address_components[i].types.length;
-          b++
-        ) {
-          if (results[0].address_components[i].types[b] == 'locality') {
-            //this is the object you are looking for
-            city = results[0].address_components[i].long_name;
-            break;
-          } else if (
-            results[0].address_components[i].types[b] ==
-            'administrative_area_level_1'
-          ) {
-            city = results[0].address_components[i].long_name;
-            break;
-          }
-        }
-        for (
-          let b = 0;
-          b < results[0].address_components[i].types.length;
-          b++
-        ) {
-          if (results[0].address_components[i].types[b] == 'country') {
-            //this is the object you are looking for
-            country = results[0].address_components[i].long_name;
-            break;
-          }
-        }
+    console.log('123123', results[results.length - 3].formatted_address);
+    const locationData = results[results.length - 3].formatted_address.split(
+      ','
+    );
+    console.log(locationData);
+    let city = '';
+    let country = locationData[locationData.length - 1];
+    if (locationData.length > 2) {
+      for (let i = 0; i < locationData.length - 2; i++) {
+        city = city + locationData[i];
       }
+    } else {
+      city = locationData[0];
     }
+
+    // if (results[1]) {
+    //   //find country name
+    //   for (let i = 0; i < results[0].address_components.length; i++) {
+    //     for (
+    //       let b = 0;
+    //       b < results[0].address_components[i].types.length;
+    //       b++
+    //     ) {
+    //       if (results[0].address_components[i].types[b] == 'locality') {
+    //         //this is the object you are looking for
+    //         city = results[0].address_components[i].long_name;
+    //         break;
+    //       } else if (
+    //         results[0].address_components[i].types[b] ==
+    //         'administrative_area_level_1'
+    //       ) {
+    //         city = results[0].address_components[i].long_name;
+    //         break;
+    //       }
+    //     }
+    //     for (
+    //       let b = 0;
+    //       b < results[0].address_components[i].types.length;
+    //       b++
+    //     ) {
+    //       if (results[0].address_components[i].types[b] == 'country') {
+    //         //this is the object you are looking for
+    //         country = results[0].address_components[i].long_name;
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
     console.log(country, city);
     // console.log(loc);
     let weatherArr = [];
@@ -130,12 +141,16 @@ module.exports = {
       if (isData.length === 0) {
         const outer = require('../data/outer.json');
         const top = require('../data/top.json');
+        const bottom = require('../data/bottom.json');
+        const acc = require('../data/acc.json');
         console.log(outer[0].name);
         const clothes = new Clothesdata({
           city,
           time: fullTime,
           outer: outer,
-          top: top
+          top: top,
+          bottom: bottom,
+          acc: acc
         });
         await clothes.save();
       }
@@ -152,19 +167,17 @@ module.exports = {
       let [ClothesDB] = await Clothesdata.find({
         city: city,
         time: fullTime
-      }).select('outer top -_id');
+      }).select('outer top bottom acc -_id');
       console.log(ClothesDB);
       ClothesDB = ClothesDB.toObject();
 
       for (let k in ClothesDB) {
-        console.log(k);
         for (let i = 0; i < ClothesDB[k].length; i++) {
           if (ClothesDB[k][i].level.includes(tempLevel)) {
             resObj[k].push(ClothesDB[k][i]);
           }
         }
       }
-      console.log(resObj);
       return resObj;
     } catch (err) {
       console.log(err);
@@ -179,103 +192,83 @@ module.exports = {
     // 3. 레벨에 따라 가능한 옷 불러오기 + 좋아요 가져오기
   },
   getCityId: async function ({ city }) {
-    console.log('아이디 찾기 실행');
-    // 1. validator로 검사하기
+    try {
+      console.log('아이디 찾기 실행');
+      // 1. validator로 검사하기
 
-    // 2. 도시 검색 결과 정규식에 넣고
-    let reg1 = new RegExp(`^${city}$`, 'ig');
-    let reg2 = new RegExp(`^${city}`, 'ig');
+      // 2. 도시 검색 결과 정규식에 넣고
+      let reg1 = new RegExp(`^${city}$`, 'ig');
+      let reg2 = new RegExp(`^${city}`, 'ig');
 
-    // 3. 정확한 이름 찾기
-    let data = await City.find()
-      .where('name')
-      .regex(reg1)
-      .select('-_id name country coord')
-      .limit(1);
-    if (data.length === 0) {
-      data = await City.find()
+      // 3. 정확한 이름 찾기
+      let data = await City.find()
         .where('name')
-        .regex(reg2)
-        .limit(3)
-        .select('-_id name country coord');
+        .regex(reg1)
+        .select('-_id name country coord')
+        .limit(1);
       if (data.length === 0) {
-        let reg3 = new RegExp(`${city}`, 'ig');
         data = await City.find()
           .where('name')
-          .regex(reg3)
-          .limit(5)
+          .regex(reg2)
+          .limit(3)
           .select('-_id name country coord');
+        if (data.length === 0) {
+          let reg3 = new RegExp(`${city}`, 'ig');
+          data = await City.find()
+            .where('name')
+            .regex(reg3)
+            .limit(5)
+            .select('-_id name country coord');
+        }
       }
-    }
-    // // db에 숫자로 저장된
-    // for (let i = 0; i < data.length; i++) {
-    //   console.log(typeof data[i].coord.lon.toString());
-    //   data[i].coord.lon = data[i].coord.lon.toString();
-    //   data[i].coord.lat = data[i].coord.lat.toString();
-    // }
+      // // db에 숫자로 저장된
+      // for (let i = 0; i < data.length; i++) {
+      //   console.log(typeof data[i].coord.lon.toString());
+      //   data[i].coord.lon = data[i].coord.lon.toString();
+      //   data[i].coord.lat = data[i].coord.lat.toString();
+      // }
 
-    const { GoogleKey } = apiKey;
-    // 4. API 에서도 찾기
-    let cityQuery = city.split(' ').join('+');
-    console.log(cityQuery);
-    const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${GoogleKey}`;
-    const {
-      data: { results }
-    } = await axios.get(getCityApiUrl);
-    let locationData = results[0].formatted_address.split(',');
+      const { GoogleKey } = apiKey;
+      // 4. API 에서도 찾기
+      let cityQuery = city.split(' ').join('+');
+      console.log(cityQuery);
+      const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${GoogleKey}`;
+      const {
+        data: { results }
+      } = await axios.get(getCityApiUrl);
 
-    let resObj = {
-      name: locationData[0],
-      country: locationData[locationData.length - 1],
-      coord: {
-        lon: results[0].geometry.location.lng,
-        lat: results[0].geometry.location.lat
+      // 데이터 없으면 db에서만 찾은것 보내기
+      if (results.length === 0) {
+        if (data[0].name === data[1].name) {
+          return [data[0]];
+        }
+        return data;
       }
-    };
 
-    let resArr = [];
-    if (resObj.name.toLowerCase() !== city.toLowerCase()) {
-      resArr.push(resObj);
-      resArr = resArr.concat(data);
-    } else {
-      resArr = resArr.concat(resObj);
+      // 데이터가 있으면
+
+      console.log(results);
+      let locationData = results[0].formatted_address.split(',');
+      let resObj = {
+        name: locationData[0],
+        country: locationData[locationData.length - 1],
+        coord: {
+          lon: results[0].geometry.location.lng,
+          lat: results[0].geometry.location.lat
+        }
+      };
+
+      // 5. DB와 API에서 찾은 값 합치기
+      let resArr = [];
+      if (resObj.name.toLowerCase() !== city.toLowerCase()) {
+        resArr.push(resObj);
+        resArr = resArr.concat(data);
+      } else {
+        resArr = resArr.concat(resObj);
+      }
+      return resArr;
+    } catch (err) {
+      console.log(err);
     }
-    console.log(resArr);
-    return resArr;
-  },
-
-  getCityWeather: async function ({ city }) {},
-
-  putClothes: async function ({ inputData: { name, type, temp, level } }) {
-    console.log(level);
-
-    const clothe1 = {
-      name: '자켓',
-      type: '아우터',
-      temp: '20~30',
-      level: [5, 6, 7]
-    };
-
-    const clothe2 = {
-      name: '코트',
-      type: '아우터',
-      temp: '20~30',
-      level: 5
-    };
-    let arr = [];
-    arr.push(clothe1);
-    const data = {
-      name: '코트',
-      type: '아우터',
-      temp: '20~30',
-      level: 5
-    };
-
-    return {
-      name: '코트',
-      tyle: '아우터',
-      temp: '20~30',
-      level: [4, 5, 6]
-    };
   }
 };

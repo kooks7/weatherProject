@@ -35,7 +35,9 @@ const clothesdataSchema = new Schema({
     required: true
   },
   outer: [clothesSchema],
-  top: [clothesSchema]
+  top: [clothesSchema],
+  bottom: [clothesSchema],
+  acc: [clothesSchema]
 });
 
 module.exports = mongoose.model('Clothesdata', clothesdataSchema);

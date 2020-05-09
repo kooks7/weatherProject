@@ -1,72 +1,122 @@
 [
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "리넨 소재 반바지",
+    "type": "bottom",
+    "temp": "25~35",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "면 소재 반바지",
+    "type": "bottom",
+    "temp": "25~35",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "청 소재 반바지",
+    "type": "bottom",
+    "temp": "25~35",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "폴리 소재 반바지",
+    "type": "bottom",
+    "temp": "25~35",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "리넨 슬랙스",
+    "type": "bottom",
+    "temp": "20~30",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [6, 7, 8]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "치노 팬츠",
+    "type": "bottom",
+    "temp": "-5~30",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5, 6, 7]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "면 팬츠",
+    "type": "bottom",
+    "temp": "5~30",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [2, 4, 5, 6, 7]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "혼방 슬랙스",
+    "type": "bottom",
+    "temp": "-5~20",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5, 6]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "울 슬랙스",
+    "type": "bottom",
+    "temp": "-5~20",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5]
   },
   {
-    "name": "",
-    "type": "",
-    "temp": "",
+    "name": "청바지",
+    "type": "bottom",
+    "temp": "-5~30",
     "like": 0,
-    "level": []
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5, 6, 7]
+  },
+  {
+    "name": "가죽바지",
+    "type": "bottom",
+    "temp": "-5~20",
+    "like": 0,
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5]
+  },
+  {
+    "name": "등산바지",
+    "type": "bottom",
+    "temp": "10~25",
+    "like": 0,
+    "unlike": 0,
+    "level": [3, 4, 5, 6]
+  },
+  {
+    "name": "카고 (면)",
+    "type": "bottom",
+    "temp": "5~30",
+    "like": 0,
+    "unlike": 0,
+    "level": [2, 4, 5, 6, 7]
+  },
+  {
+    "name": "조거 (면)",
+    "type": "bottom",
+    "temp": "5~30",
+    "like": 0,
+    "unlike": 0,
+    "level": [2, 4, 5, 6, 7]
+  },
+  {
+    "name": "레깅스",
+    "type": "bottom",
+    "temp": "5~30",
+    "like": 0,
+    "unlike": 0,
+    "level": [2, 4, 5, 6, 7]
   }
 ]

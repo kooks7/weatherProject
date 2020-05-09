@@ -1,0 +1,50 @@
+[
+  {
+    "name": "머플러(간절기)",
+    "type": "acc",
+    "temp": "0~14",
+    "like": 0,
+    "unlike": 0,
+    "level": [1, 2]
+  },
+  {
+    "name": "목도리(겨울)",
+    "type": "acc",
+    "temp": "-5~5",
+    "like": 0,
+    "unlike": 0,
+    "level": [0, 1]
+  },
+  {
+    "name": "장갑",
+    "type": "acc",
+    "temp": "-5~5",
+    "like": 0,
+    "unlike": 0,
+    "level": [0, 1, 2]
+  },
+  {
+    "name": "긴양말",
+    "type": "acc",
+    "temp": "-5~25",
+    "like": 0,
+    "unlike": 0,
+    "level": [0, 1, 2, 3, 4, 5, 6]
+  },
+  {
+    "name": "페이크 삭스",
+    "type": "acc",
+    "temp": "10~35",
+    "like": 0,
+    "unlike": 0,
+    "level": [3, 4, 5, 6, 7, 8]
+  },
+  {
+    "name": "비니",
+    "type": "acc",
+    "temp": "-5~14",
+    "like": 0,
+    "unlike": 0,
+    "level": [0, 1, 2, 3]
+  }
+]
