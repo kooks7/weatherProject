@@ -66,10 +66,11 @@ mongoose
     const io = require('./socket').init(server);
     io.on('connection', (socket) => {
       console.log('Client Connected');
-      socket.on('liked', ({ data }) => {
+      socket.on('liked', ({ data, alreadyClicked }) => {
         const splitData = data.split('_');
+        console.log('alreadyClicked', alreadyClicked);
         // 식별 데이터, like unlike 데이터
-        likedFun.putLike(splitData[0], splitData[1]);
+        likedFun.putLike(splitData[0], splitData[1], alreadyClicked);
       });
     });
     io.on('disconnect', () => {
