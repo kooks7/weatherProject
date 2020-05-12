@@ -20,10 +20,13 @@ module.exports = {
       data: { results }
     } = await axios.get(googleApi);
     console.log(results);
+
     console.log('123123', results[results.length - 3].formatted_address);
+
     const locationData = results[results.length - 3].formatted_address.split(
       ','
     );
+
     console.log(locationData);
     let city = '';
     let country = locationData[locationData.length - 1];
