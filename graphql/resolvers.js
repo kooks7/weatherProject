@@ -3,31 +3,24 @@ const apiKey = require('../api.json');
 // const Weather = require('../model/weather');
 const Clothesdata = require('../model/ClothesData');
 const City = require('../model/CityId');
-// const clothes = require('../model/ClothesObj');
 
 module.exports = {
   getWeather: async function ({ latitude, longitude }, req) {
-    console.log('getWeather 실행');
     // 1. 위도 경도로 위치 검색
 
-    const { weatherKey } = apiKey;
-    const { GoogleKey } = apiKey;
-    let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${weatherKey}&units=metric`;
-    const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleKey}`;
-    // https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleKey}
+    // const { weatherKey } = apiKey;
+    // const { GoogleKey } = apiKey;
+    let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.weatherKey}&units=metric`;
+    const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.GoogleKey}`;
     const { data } = await axios.get(apiUrl);
     const {
       data: { results }
     } = await axios.get(googleApi);
-    console.log(results);
-
-    console.log('123123', results[results.length - 3].formatted_address);
 
     const locationData = results[results.length - 3].formatted_address.split(
       ','
     );
 
-    console.log(locationData);
     let city = '';
     let country = locationData[locationData.length - 1];
     if (locationData.length > 2) {
@@ -38,41 +31,6 @@ module.exports = {
       city = locationData[0];
     }
 
-    // if (results[1]) {
-    //   //find country name
-    //   for (let i = 0; i < results[0].address_components.length; i++) {
-    //     for (
-    //       let b = 0;
-    //       b < results[0].address_components[i].types.length;
-    //       b++
-    //     ) {
-    //       if (results[0].address_components[i].types[b] == 'locality') {
-    //         //this is the object you are looking for
-    //         city = results[0].address_components[i].long_name;
-    //         break;
-    //       } else if (
-    //         results[0].address_components[i].types[b] ==
-    //         'administrative_area_level_1'
-    //       ) {
-    //         city = results[0].address_components[i].long_name;
-    //         break;
-    //       }
-    //     }
-    //     for (
-    //       let b = 0;
-    //       b < results[0].address_components[i].types.length;
-    //       b++
-    //     ) {
-    //       if (results[0].address_components[i].types[b] == 'country') {
-    //         //this is the object you are looking for
-    //         country = results[0].address_components[i].long_name;
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
-    console.log(country, city);
-    // console.log(loc);
     let weatherArr = [];
     let i = 0;
     for (let d of data.list) {
@@ -128,26 +86,21 @@ module.exports = {
         tempLevel = 9;
       }
 
-      // console.log(temp, time, city);
       const timeStamp = new Date(time);
 
       const year = timeStamp.getFullYear();
       const month = timeStamp.getMonth() + 1;
       const date = timeStamp.getDate();
       const fullTime = year.toString() + month.toString() + date.toString();
-      // console.log(fullTime);
       // 1. db에 도시 + 날짜 데이터 있는지 찾고
 
       const isData = await Clothesdata.find({ city: city, time: fullTime });
-      console.log(isData.length);
       // 데이터 없으면 db에 넣어주기
-      console.log(isData);
       if (isData.length === 0) {
         const outer = require('../data/outer.json');
         const top = require('../data/top.json');
         const bottom = require('../data/bottom.json');
         const acc = require('../data/acc.json');
-        console.log(outer[0].name);
         const clothes = new Clothesdata({
           city,
           time: fullTime,
@@ -172,7 +125,6 @@ module.exports = {
         city: city,
         time: fullTime
       }).select('outer top bottom acc -_id');
-      console.log(ClothesDB);
       ClothesDB = ClothesDB.toObject();
 
       for (let k in ClothesDB) {
@@ -186,18 +138,9 @@ module.exports = {
     } catch (err) {
       console.log(err);
     }
-
-    // 2. 없으면 현재 날짜 + 도시로 db 만든다. JSON 데이터로 db 만들기
-
-    // db에 누가 불러왔으면 데이터 가져오기
-
-    // console.log(tempLevel);
-
-    // 3. 레벨에 따라 가능한 옷 불러오기 + 좋아요 가져오기
   },
   getCityId: async function ({ city }) {
     try {
-      console.log('아이디 찾기 실행');
       // 1. validator로 검사하기
 
       // 2. 도시 검색 결과 정규식에 넣고
@@ -225,18 +168,11 @@ module.exports = {
             .select('-_id name country coord');
         }
       }
-      // // db에 숫자로 저장된
-      // for (let i = 0; i < data.length; i++) {
-      //   console.log(typeof data[i].coord.lon.toString());
-      //   data[i].coord.lon = data[i].coord.lon.toString();
-      //   data[i].coord.lat = data[i].coord.lat.toString();
-      // }
 
-      const { GoogleKey } = apiKey;
+      // const { GoogleKey } = apiKey;
       // 4. API 에서도 찾기
       let cityQuery = city.split(' ').join('+');
-      console.log(cityQuery);
-      const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${GoogleKey}`;
+      const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${process.env.GoogleKey}`;
       const {
         data: { results }
       } = await axios.get(getCityApiUrl);
@@ -251,7 +187,6 @@ module.exports = {
 
       // 데이터가 있으면
 
-      console.log(results);
       let locationData = results[0].formatted_address.split(',');
       let resObj = {
         name: locationData[0],

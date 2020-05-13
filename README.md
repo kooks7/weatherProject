@@ -222,6 +222,10 @@ API URL : `api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your ap
 2. 날씨에 맞게 옷을 추천
 3. 검색을 통해 도시를 변경 할 수 있다.
 4. 좋아요를 눌러서 그날 옷 괜찮은지 socket.io로 보내줄 수 있다.
+   * 같은 날, 같은 지역에 있는 사람끼리 좋아요를 공유할 수 있다.
+   * 구글 위치 api를 사용한다. (위도 경도로 도시 불러오기)
+   * jwt 정보를 남겨서 한번만 좋아요 누를수 있게 한다.
+   * userIdCheck 쿼리
 
 
 

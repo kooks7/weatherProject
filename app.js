@@ -12,7 +12,7 @@ const graphqlHttp = require('express-graphql');
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
 
-const MONGODB_URI = 'mongodb://localhost:27017/weather';
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-s8bpd.gcp.mongodb.net/${MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -62,7 +62,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    const server = app.listen(4000);
+    const server = app.listen(process.env.PORT || 4000);
     const io = require('./socket').init(server);
     io.on('connection', (socket) => {
       console.log('Client Connected');
