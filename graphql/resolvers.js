@@ -1,5 +1,5 @@
 const axios = require('axios');
-const apiKey = require('../api.json');
+// const apiKey = require('../api.json');
 // const Weather = require('../model/weather');
 const Clothesdata = require('../model/ClothesData');
 const City = require('../model/CityId');
