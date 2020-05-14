@@ -2,7 +2,9 @@
 
 #### 개요
 
-* 오늘 뭐 입을지 항상 고민한다. 날씨에 따라 자동으로 이 옷 입어도 되는지 알려주는 서비스!
+* 우리는 항상 이 옷을 입으면 더울까? 추울까? 라고 고민합니다. 날씨에 따라 자동으로 그 옷을 입어도 되는지 알려주는 서비스!
+
+  
 
 ## 설계
 
@@ -10,15 +12,6 @@
 * Back : Node.js + Express.js
 * 통신 ~~REST API~~ > GraphQL 다양한 쿼리를 이용하기 위해
 * DB : mongoDB
-
-#### End Point
-
-1. **GraphQL**: weather/{도시이름}
-   * 브라우저에서 위치정보 가져오기.
-
-#### DB
-
-1. City: 날씨 api에 사용할 도시 이름별 id
 
 #### Query별 함수
 
@@ -60,12 +53,14 @@
 
    * city id 검색하기
 
-#### NPM Pakage
+#### 주요 NPM Pakage
 
 * ~~request~~ => axios
 * express
-* ejs
 * body-parser
+* socket.io
+* mongoose
+* graphql-express
 
 #### 날씨 API
 
@@ -223,7 +218,7 @@ API URL : `api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your ap
 4. 좋아요를 눌러서 그날 옷 괜찮은지 socket.io로 보내줄 수 있다.
    * 같은 날, 같은 지역에 있는 사람끼리 좋아요를 공유할 수 있다.
    * 구글 위치 api를 사용한다. (위도 경도로 도시 불러오기)
-   * jwt 정보를 남겨서 한번만 좋아요 누를수 있게 한다.
+   * Local Storage 정보를 남겨서 한번만 좋아요 누를수 있게 한다.
    * userIdCheck 쿼리
 
 
