@@ -1,5 +1,6 @@
 const axios = require('axios');
-const apiKey = require('../api.json');
+// const apiKey = require('../api.json');
+// const Weather = require('../model/weather');
 const Clothesdata = require('../model/ClothesData');
 const City = require('../model/CityId');
 
@@ -7,14 +8,10 @@ module.exports = {
   getWeather: async function ({ latitude, longitude }, req) {
     // 1. 위도 경도로 위치 검색
 
-    // let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.weatherKey}&units=metric`;
-    // const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.GoogleKey}`;
-    // const { data } = await axios.get(apiUrl);
-
-    const { weatherKey } = apiKey;
-    const { GoogleKey } = apiKey;
-    let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${weatherKey}&units=metric`;
-    const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GoogleKey}`;
+    // const { weatherKey } = apiKey;
+    // const { GoogleKey } = apiKey;
+    let apiUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.weatherKey}&units=metric`;
+    const googleApi = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.GoogleKey}`;
     const { data } = await axios.get(apiUrl);
     const {
       data: { results }
@@ -172,12 +169,10 @@ module.exports = {
         }
       }
 
-      const { GoogleKey } = apiKey;
+      // const { GoogleKey } = apiKey;
       // 4. API 에서도 찾기
       let cityQuery = city.split(' ').join('+');
-      // const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${process.env.GoogleKey}`;
-      const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${GoogleKey}`;
-
+      const getCityApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityQuery}&key=${process.env.GoogleKey}`;
       const {
         data: { results }
       } = await axios.get(getCityApiUrl);
