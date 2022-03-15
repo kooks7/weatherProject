@@ -15,11 +15,11 @@ const graphqlResolver = require("./graphql/resolvers");
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-s8bpd.gcp.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
